@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Commo AI — Oil Price Dashboard
+
+A simple web dashboard that tracks WTI crude oil prices, shows trends and charts, generates AI explanations of price movement, and provides trucking-focused business impact insights.
+
+## Features
+
+- **Live WTI price** from Yahoo Finance (`CL=F`)
+- **30/60/90-day charts** via Recharts
+- **Trend engine** — heuristic bullish/bearish/stable/unstable signals
+- **AI explanations** — OpenAI GPT-4o-mini (with heuristic fallback)
+- **Trucking impact** — risk level and suggested actions
+- **Rule-based alerts** — price shocks, volatility spikes, trend reversals
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- TypeScript + Tailwind CSS
+- Recharts
+- yahoo-finance2
+- OpenAI API
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env.local
+# Add your OPENAI_API_KEY to .env.local (optional)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/prices` | GET | Oil price, history, features, trend, alerts |
+| `/api/analyze` | POST | AI explanation + trucking impact |
 
-## Learn More
+## Deploy (Vercel)
 
-To learn more about Next.js, take a look at the following resources:
+1. Push to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Set `OPENAI_API_KEY` in environment variables
+4. Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENAI_API_KEY` | No | Enables GPT-4o-mini explanations; without it, heuristic fallback is used |
