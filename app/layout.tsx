@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Commo AI — Oil Price Dashboard",
+  title: "Commo-AI — AI Commodity Risk Intelligence",
   description:
-    "WTI crude oil price tracking with trend signals and trucking business impact insights",
+    "Monitor commodity markets with AI-powered forecasts and understand how price changes impact your business.",
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#0f1117] text-slate-200">
         {children}
