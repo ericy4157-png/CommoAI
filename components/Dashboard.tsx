@@ -4,8 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { AIExplanation } from "@/components/AIExplanation";
 import { AlertsBanner } from "@/components/AlertsBanner";
 import { BusinessImpact } from "@/components/BusinessImpact";
+import { CompanyProfileBanner } from "@/components/CompanyProfileBanner";
 import { PriceChart } from "@/components/PriceChart";
 import { PriceHeader } from "@/components/PriceHeader";
+import { getOnboarding } from "@/lib/onboarding";
 import type { AnalyzeResponse, PricesResponse } from "@/lib/types";
 
 export function Dashboard() {
@@ -15,8 +17,13 @@ export function Dashboard() {
   const [analyzeError, setAnalyzeError] = useState<string | null>(null);
   const [loadingPrices, setLoadingPrices] = useState(true);
   const [loadingAnalyze, setLoadingAnalyze] = useState(false);
+  const [companyProfile, setCompanyProfile] = useState(
+    () => getOnboarding(),
+  );
 
   const fetchAnalysis = useCallback(async (data: PricesResponse) => {
+    const profile = getOnboarding();
+    setCompanyProfile(profile);
     setLoadingAnalyze(true);
     setAnalyzeError(null);
     try {
@@ -29,6 +36,7 @@ export function Dashboard() {
           features: data.features,
           trend: data.trend,
           alerts: data.alerts,
+          company: profile ?? undefined,
         }),
       });
       if (!res.ok) {
@@ -42,7 +50,7 @@ export function Dashboard() {
         err instanceof Error ? err.message : "Failed to load AI analysis",
       );
       setAnalysis({
-        explanation: data.truckingImpact.explanation,
+        explanation: data.truckingImpact.executiveSummary,
         shortTermDirection:
           data.trend.label === "upward_pressure"
             ? "up"
@@ -111,6 +119,7 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
+      {!companyProfile && <CompanyProfileBanner />}
       <AlertsBanner alerts={prices.alerts} />
       <PriceHeader data={prices} />
       <PriceChart history={prices.history} />
@@ -121,8 +130,43 @@ export function Dashboard() {
           loading={loadingAnalyze}
           error={analyzeError}
         />
-        <BusinessImpact impact={displayImpact} loading={loadingAnalyze} />
+        <div className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+          <h2 className="mb-2 text-sm font-semibold text-slate-300">
+            Market Snapshot
+          </h2>
+          <dl className="space-y-3 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">7-day momentum</dt>
+              <dd className="font-medium text-white">
+                {prices.features.momentum7d >= 0 ? "+" : ""}
+                {prices.features.momentum7d.toFixed(2)}%
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">Volatility</dt>
+              <dd className="font-medium text-white">
+                {prices.features.volatility.toFixed(2)}%
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">Trend</dt>
+              <dd className="font-medium text-white">
+                {prices.trend.displayLabel}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-slate-500">Active alerts</dt>
+              <dd className="font-medium text-white">{prices.alerts.length}</dd>
+            </div>
+          </dl>
+        </div>
       </div>
+
+      <BusinessImpact
+        impact={displayImpact}
+        loading={loadingAnalyze}
+        companyName={companyProfile?.companyName}
+      />
 
       <div className="flex justify-end">
         <button

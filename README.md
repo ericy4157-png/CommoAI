@@ -10,6 +10,7 @@ A simple web dashboard that tracks WTI crude oil prices, shows trends and charts
 - **AI explanations** — OpenAI GPT-4o-mini (with heuristic fallback)
 - **Trucking impact** — risk level and suggested actions
 - **Rule-based alerts** — price shocks, volatility spikes, trend reversals
+- **Global risk news** — market shocks, supply chain, geopolitics, and natural disasters
 
 ## Tech Stack
 
@@ -36,6 +37,7 @@ Open [http://localhost:3000](http://localhost:3000).
 |-------|--------|-------------|
 | `/api/prices` | GET | Oil price, history, features, trend, alerts |
 | `/api/analyze` | POST | AI explanation + trucking impact |
+| `/api/news` | GET | Market risk news headlines |
 
 ## Deploy (Vercel)
 
@@ -49,3 +51,4 @@ Open [http://localhost:3000](http://localhost:3000).
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `OPENAI_API_KEY` | No | Enables GPT-4o-mini explanations; without it, heuristic fallback is used |
+| `CURRENTS_API_KEY` | No | Enables multi-source news on `/news`; without it, BBC/NPR RSS fallback is used |

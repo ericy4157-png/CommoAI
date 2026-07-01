@@ -1,5 +1,5 @@
 import { computeAlerts } from "./alerts";
-import { computeTruckingImpact } from "./trucking-impact";
+import { computeGenericRiskReport } from "./company-risk";
 import { computeTrend } from "./trend-engine";
 import type { PriceFeatures, PricePoint, PricesResponse } from "./types";
 
@@ -85,12 +85,13 @@ export async function getOilPrices(): Promise<PricesResponse> {
   const features = computeFeatures(history);
   const trend = computeTrend(features, dailyChangePct);
   const alerts = computeAlerts(dailyChangePct, features, history);
-  const truckingImpact = computeTruckingImpact(
-    latest.close,
+  const truckingImpact = computeGenericRiskReport({
+    price: latest.close,
     dailyChangePct,
     features,
     trend,
-  );
+    alerts,
+  });
 
   return {
     price: latest.close,

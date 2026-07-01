@@ -13,7 +13,10 @@ export function Navbar() {
           </span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium text-slate-400">
-          <Link href="#about" className="transition-colors hover:text-white">
+          <Link href="/news" className="transition-colors hover:text-white">
+            News
+          </Link>
+          <Link href="/about" className="transition-colors hover:text-white">
             About
           </Link>
           <Link href="#contact" className="transition-colors hover:text-white">

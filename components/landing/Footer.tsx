@@ -16,11 +16,11 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Commo-AI. All rights reserved.
           </p>
         </div>
-        <nav
-          id="about"
-          className="flex gap-6 text-sm font-medium text-slate-400"
-        >
-          <Link href="#about" className="transition-colors hover:text-white">
+        <nav className="flex gap-6 text-sm font-medium text-slate-400">
+          <Link href="/news" className="transition-colors hover:text-white">
+            News
+          </Link>
+          <Link href="/about" className="transition-colors hover:text-white">
             About
           </Link>
           <Link href="#contact" className="transition-colors hover:text-white">
